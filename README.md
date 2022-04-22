@@ -1,5 +1,5 @@
-# Archivierung_Korrektur_Umbenennung
-# Programm zur Umbenennung der PDF-Dateien aus dem LPLUS Export auf Basis der Prüflingsdaten
+## Archivierung_Korrektur_Umbenennung
+## Programm zur Umbenennung der PDF-Dateien aus dem LPLUS Export auf Basis der Prüflingsdaten
 
 ### Problembeschreibung
 Bei einem LPLUS Reportmappenexport werden die Prüflingsdaten in folgendem Format ausgegeben:
