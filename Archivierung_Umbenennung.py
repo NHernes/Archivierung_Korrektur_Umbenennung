@@ -103,12 +103,34 @@ for i in ordner:
             while sep in Matrikelnummer:
                 Matrikelnummer=Matrikelnummer[1:]
 
-            ############### Extraktion Lizenzname ###############           
-            #Hier wird das Fach aus dem Gesamtindex gefiltert und aus den beiden Items zusammengefügt
-            lizenz_liste = [i for i, s in enumerate(text) if 'Fach:' in s]
-            p= lizenz_liste[0]
-            lizenz=text[p+1]+" "+text[p+2]
 
+
+
+
+            ############### Extraktion Lizenzname ###############           
+            #Extraktion des Indexes für Fach und Lizenz, da zwischen den ersten Indexen der Lizenzname angeordnet ist
+            fach_liste = [i for i, s in enumerate(text) if 'Fach:' in s]
+            lizenz_liste = [i for i, s in enumerate(text) if 'Lizenz:' in s]
+
+
+            #Berechnung der zwischen den beiden Randindexen befindlichen Listeneinträge, dies ist der Lizenzname
+            #Die Range muss daher definiert werden, damit auch längere Lizenznamen korrekt eingelesen werden
+            differenz3=(lizenz_liste[0]-fach_liste[0])-1
+
+            hochzählen=0
+
+            #tracking_index wird initialisiert, um die Indexe zwischen den Randindexen zu berechnen
+            tracking_index=int(fach_liste[0])
+
+            lizenz=""
+
+            #Hier wird über alle Indexe zwischen den beiden Randindexen iteriert und die darin befindlichen Items dem Lizenznamen angehangen
+            while hochzählen < differenz3:
+                tracking_index=tracking_index+1
+                hochzählen=hochzählen+1
+                lizenz=lizenz+"_"+text[tracking_index]
+
+                
             ############### Generierung der Strings zur Umbenennung ###############
             #Hier wird der String zur Umbenennung der Datei gebildet
             string=Matrikelnummer+name+fach+".pdf"
