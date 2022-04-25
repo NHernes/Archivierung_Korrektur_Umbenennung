@@ -3,9 +3,36 @@ from os import walk
 import os
 import tkinter as tk
 from tkinter.filedialog import askdirectory
+from tkinter import *
+from tkinter.messagebox import showinfo
+from tkinter import messagebox
+import time
+
+#Aufbau Fenster
+root = tk.Tk()
+root.title('Umbenennung Archivdateien')
+root.geometry("1100x400")
+
+#GUI Design
+S = Scrollbar(root)
+
+#Hauptfenster
+T = Text(root, height=4, width=100)
+S.pack(side=RIGHT, fill=Y)
+T.pack(side=LEFT, fill=Y)
+S.config(command=T.yview)
+T.config(yscrollcommand=S.set)
+
+#Seitenfenster
+Side = Text(root, height=4, width=25)
+Side.pack(side=TOP)
+Side.config(state=NORMAL)
+
 
 #Datei-Picker
 path0=askdirectory()
+
+####Beginn der eigentlichen Operation###
 
 #Erfassen der bestehenden Ordner
 ordner = []
@@ -13,20 +40,22 @@ for (dirpath, dirnames, filenames) in walk(path0):
     ordner.extend(dirnames)
     break
 
-
-####Beginn der eigentlichen Operation###
-
 #Variable für die Ausgabe der veränderten Datei
-zähler=0
+zähler_datei=0
+zähler_ordner=0
 
 #Hochzählen zur Iteration der Ordner-Liste
 x=-1
+
+#Initieren der Tracking-Variablen für die Ersetzung mit Bindestrichen
+fach_bindestrich=False
+lizenz_bindestrich=False
 
 #Liste der in den jeweiligen Ordnern vorliegenden Dateien
 datei=[]
 for i in ordner:
     x=x+1
-
+    zähler_ordner=zähler_ordner+1
     #Variable zum Durchlaufen der Dateien in einem Ordner
     walker=-1
 
@@ -37,7 +66,7 @@ for i in ordner:
         
         for i in filenames:
             
-            zähler=zähler+1
+            zähler_datei=zähler_datei+1
             walker=walker+1
             #Konstruktion des Pfadnamens der Datei
             path2=path1+"/"+filenames[walker]
@@ -99,6 +128,11 @@ for i in ordner:
                     tracking_index=tracking_index+1
                     hochzählen=hochzählen+1
                     fach=fach+"_"+text[tracking_index]
+
+                    #Um die Dateien trotz Fächern mit Slash im Namen umzubenennen, werden diese hier mit einem Bindestrich ersetzt
+                    if "/" in fach:
+                        fach= fach.replace("/","-")
+                        fach_bindestrich=True
                     
 
                 ############### Extraktion Matrikelnummer ###############
@@ -113,9 +147,6 @@ for i in ordner:
                 sep="-"
                 while sep in Matrikelnummer:
                     Matrikelnummer=Matrikelnummer[1:]
-
-
-
 
 
                 ############### Extraktion Lizenzname ###############           
@@ -140,6 +171,12 @@ for i in ordner:
                     tracking_index=tracking_index+1
                     hochzählen=hochzählen+1
                     lizenz=lizenz+"_"+text[tracking_index]
+                    lizenz=lizenz[1:]
+
+                    #Um die Ordner trotz Fächern mit Slash im Namen umzubenennen, werden diese hier mit einem Bindestrich ersetzt
+                    if "/" in lizenz:
+                        lizenz=lizenz.replace("/","-")
+                        lizenz_bindestrich=True
 
 
                 ############### Generierung der Strings zur Umbenennung ###############
@@ -150,15 +187,57 @@ for i in ordner:
                 path_file_new=path1+"/"+string
 
                 #Hier wird der Pfad zum umzubennenden Ordner gebildet
-                ordner_neu=path0+"/"+Matrikelnummer+name+"_"+lizenz
+                ordner_neu=path0+"/"+Matrikelnummer+name+lizenz
 
             #Umbenennung der Datei und des Ordners    
             os.rename(path2, path_file_new)
             
+            
+            #Ausgabe der umbenannten Datei im Textfeld Hauptfeld
+            T.insert(INSERT,filenames[walker]+"\n   ----->   "+ string +"\n\n")
+            T.update()
+            
+            #Ausgabe des Index der umbenannten Datei im Textfeld Seitenfeld
+            Side.delete(1.0, END)
+            Side.insert(INSERT,"Datei Nr. "+ str(zähler_datei)+" umbenannt\n")
+            Side.update()
+
             #Ausgabe der Iteration
-            print("Datei Nr. " + str(zähler) +" aktualisiert")
+            print("Datei Nr. " + str(zähler_datei) +" aktualisiert")
 
         os.rename(path1, ordner_neu)
 
-        
-        
+        #Ausgabe des umbenannten Ordners im Textfeld Hauptfeld
+        T.insert(END, ordner[x]+"\n   ----->   "+ Matrikelnummer+name+"_"+lizenz +"\n\n")
+        T.update()
+        T.see(END)
+
+        #Ausgabe des Index des umbenannten Ordners im Textfeld Seitenfeld   
+        Side.insert(INSERT,"Ordner Nr. "+ str(zähler_ordner)+" umbenannt")
+        Side.update()
+
+#Ausgabe der Zusammenfassung
+T.insert(END, "---------------------------------\n"
+"Umbenennung erfolgreich \n\n"
+"Es wurden "+str(zähler_datei)+" Dateien umbenannt\n"
+"Es wurden "+str(zähler_ordner) +" Ordner umbenannt")
+
+#Ausgabe der Ersetzung mit Bindestrichen, falls aufgetreten
+if fach_bindestrich==True:
+    T.insert(END, "\n\nACHTUNG: Im Dateinamen wurden Schrägstriche mit Bindestrichen ersetzt") 
+
+if lizenz_bindestrich==True:
+    T.insert(END, "\nACHTUNG: Im Ordnernamen wurden Schrägstriche mit Bindestrichen ersetzt") 
+
+T.update()
+
+#Konstanter Sprung des Textfeldes an das Feldende Hauptfeld
+T.see(END)
+
+#Popup Dialog mit der Zusammenfassung
+info = messagebox.showinfo('Zusammenfassung', "Umbenennung erfolgreich \n\n"
+"Es wurden "+str(zähler_datei)+" Dateien umbenannt\n"
+"Es wurden "+str(zähler_ordner) +" Ordner umbenannt", parent=root)
+
+root.protocol("WM_DELETE_WINDOW", quit)
+root.mainloop(  )   
