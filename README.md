@@ -1,5 +1,6 @@
 ## Archivierung_Korrektur_Umbenennung
 ##
+### Wenn Nutzung der .py:
 Please install via win+r "cmd" (Eingabeaufforderung):
 - py -m pip install fitz
 - py -m pip install walk
