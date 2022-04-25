@@ -1,10 +1,8 @@
 ## Archivierung_Korrektur_Umbenennung
 ##
-Please install:
-- fitz
-- walk
-- os
-- tkinter
+Please install via win+r "cmd" (Eingabeaufforderung):
+- py -m pip install fitz
+- py -m pip install walk
 
 ## Programm zur Umbenennung der PDF-Dateien aus dem LPLUS Export auf Basis der Prüflingsdaten
 
