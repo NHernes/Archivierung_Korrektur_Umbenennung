@@ -1,4 +1,11 @@
 ## Archivierung_Korrektur_Umbenennung
+##
+Please install:
+- fitz
+- walk
+- os
+- tkinter
+
 ## Programm zur Umbenennung der PDF-Dateien aus dem LPLUS Export auf Basis der Prüflingsdaten
 
 ### Problembeschreibung
