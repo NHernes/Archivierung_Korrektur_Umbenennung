@@ -40,3 +40,6 @@ Das Skript iteriert über alle Ordner und die darin enthaltenen Dateien. Dabei l
   
   Beispiel:
   1234_Mustermann_Max_Beispielfach.pdf
+
+### Hinweise:
+Damit Ordner und Dateien umbenannt werden können, werden mögliche Slashes entfernt und mit Bindestrichen ersetzt
