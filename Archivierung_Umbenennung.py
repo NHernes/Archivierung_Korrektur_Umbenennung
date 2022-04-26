@@ -4,7 +4,6 @@ import os
 import tkinter as tk
 from tkinter.filedialog import askdirectory
 from tkinter import *
-from tkinter.messagebox import showinfo
 from tkinter import messagebox
 import time
 
@@ -50,6 +49,8 @@ x=-1
 #Initieren der Tracking-Variablen für die Ersetzung mit Bindestrichen
 fach_bindestrich=False
 lizenz_bindestrich=False
+fach_doppelpunkt=False
+lizenz_doppelpunkt=False
 
 #Liste der in den jeweiligen Ordnern vorliegenden Dateien
 datei=[]
@@ -134,6 +135,11 @@ for i in ordner:
                         fach= fach.replace("/","-")
                         fach_bindestrich=True
                     
+                    if ":" in fach:
+                        fach= fach.replace(":","")
+                        fach_doppelpunkt=True
+
+                    
 
                 ############### Extraktion Matrikelnummer ###############
                 #Die Matrikelnummer befindet sich im Login, dieser wird immer nach der zweiten Erscheinung des Items "Geburtsdatum:" geschrieben
@@ -178,6 +184,10 @@ for i in ordner:
                         lizenz=lizenz.replace("/","-")
                         lizenz_bindestrich=True
 
+                    if ":" in lizenz:
+                        lizenz= lizenz.replace(":","")
+                        lizenz_doppelpunkt=True
+
 
                 ############### Generierung der Strings zur Umbenennung ###############
                 #Hier wird der String zur Umbenennung der Datei gebildet
@@ -187,7 +197,7 @@ for i in ordner:
                 path_file_new=path1+"/"+string
 
                 #Hier wird der Pfad zum umzubennenden Ordner gebildet
-                ordner_neu=path0+"/"+Matrikelnummer+name+lizenz
+                ordner_neu=path0+"/"+Matrikelnummer+name+"_"+lizenz
 
             #Umbenennung der Datei und des Ordners    
             os.rename(path2, path_file_new)
@@ -224,10 +234,16 @@ T.insert(END, "---------------------------------\n"
 
 #Ausgabe der Ersetzung mit Bindestrichen, falls aufgetreten
 if fach_bindestrich==True:
-    T.insert(END, "\n\nACHTUNG: Im Dateinamen wurden Schrägstriche mit Bindestrichen ersetzt") 
+    T.insert(END, "\n\nACHTUNG: Im Dateinamen wurden Schrägstriche mit Bindestrichen ersetzt.") 
 
 if lizenz_bindestrich==True:
-    T.insert(END, "\nACHTUNG: Im Ordnernamen wurden Schrägstriche mit Bindestrichen ersetzt") 
+    T.insert(END, "\nACHTUNG: Im Ordnernamen wurden Schrägstriche mit Bindestrichen ersetzt.") 
+
+if fach_doppelpunkt==True:
+    T.insert(END, "\n\nACHTUNG: Im Dateinamen wurden Doppelpunkte gefiltert.") 
+
+if lizenz_doppelpunkt==True:
+    T.insert(END, "\nACHTUNG: Im Ordnernamen wurden Doppelpunkte gefiltert.") 
 
 T.update()
 
@@ -239,5 +255,5 @@ info = messagebox.showinfo('Zusammenfassung', "Umbenennung erfolgreich \n\n"
 "Es wurden "+str(zähler_datei)+" Dateien umbenannt\n"
 "Es wurden "+str(zähler_ordner) +" Ordner umbenannt", parent=root)
 
-root.protocol("WM_DELETE_WINDOW", quit)
+#root.protocol("WM_DELETE_WINDOW", quit)
 root.mainloop(  )   
