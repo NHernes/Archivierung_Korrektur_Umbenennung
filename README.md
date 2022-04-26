@@ -42,4 +42,4 @@ Das Skript iteriert über alle Ordner und die darin enthaltenen Dateien. Dabei l
   1234_Mustermann_Max_Beispielfach.pdf
 
 ### Hinweise:
-Damit Ordner und Dateien umbenannt werden können, werden mögliche Slashes entfernt und mit Bindestrichen ersetzt
+Damit Ordner und Dateien umbenannt werden können, werden mögliche Schrägstriche entfernt und mit Bindestrichen ersetzt
