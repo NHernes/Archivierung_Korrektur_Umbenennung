@@ -44,3 +44,5 @@ Das Skript iteriert über alle Ordner und die darin enthaltenen Dateien. Dabei l
 ### Hinweise:
 Damit Ordner und Dateien umbenannt werden können, werden mögliche Schrägstriche entfernt und mit Bindestrichen ersetzt
 Beispiel: WiSe21/22 ---> WiSe21-22
+
+Einige Pfade können sehr lang sein, daher empfiehlt es sich, die Zeichenbegrenzung von 260 für Pfade aufzuheben. Eine Anleitung findet sich unter: https://ekiwi-blog.de/22934/zu-lange-datei-und-pfadnamen-unter-windows/
